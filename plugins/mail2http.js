@@ -39,12 +39,7 @@ function post(mail){
 }
 
 mailparser.on("end", function(mail){ 
-    console.log("From:", mail.from); 
-    console.log("to:", mail.to);
-    console.log("Subject:", mail.subject); 
-    console.log("Text body:", mail.text); 
-    console.log("html body:", mail.html);  
-    console.log("attachments:", mail.attachments); 
+    console.log("mail:", mail); 
     mail.attachments.forEach(function(attachment,i){
         fs.writeFile(process.cwd() + "/attachments/" + attachment.fileName, attachment.content, function (err) {
           console.log( attachment.fileName + ' is saved!');
