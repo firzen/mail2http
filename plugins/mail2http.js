@@ -36,6 +36,8 @@ function post(mail){
     request(message, function(err, resp, body) {
       console.log(err, resp, body);
     });
+    
+    rawMailData = null;
 }
 
 mailparser.on("end", function(mail){ 
