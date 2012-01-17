@@ -43,8 +43,8 @@ function post(mail){
 mailparser.on("end", function(mail){ 
     console.log("mail:", mail); 
     mail.attachments.forEach(function(attachment,i){
-        fs.writeFile(process.cwd() + "/attachments/" + attachment.fileName, attachment.content, function (err) {
-          console.log( attachment.fileName + ' is saved!');
+        fs.writeFile(process.cwd() + "/attachments/" + attachment.generatedFileName, attachment.content, function (err) {
+          console.log( attachment.generatedFileName + ' is saved!');
         });
     });
     
