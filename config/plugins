@@ -20,7 +20,7 @@ rcpt_to.in_host_list
 
 # Queue mail via smtp
 #queue/smtp_forward
-test_queue
+#test_queue
 
 
 #mail to http post 
