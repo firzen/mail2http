@@ -60,7 +60,7 @@
         });
 
         request.send(function(error, response) {
-            if(response.statusCode === 200){
+            if(response && response.statusCode && response.statusCode === 200){
                 files.forEach(function(path,i){
                     fs.unlink(path, function (err) {
                         console.log(path + " uploaded successfully, local cache deleted.");
