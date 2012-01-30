@@ -7,7 +7,7 @@
     multiparter = require("multiparter");
 
     process.on('message', function(msg) {
-        //避免长时间邮件解析上传操作影响邮件服务器io处理
+        //避免长时间邮件解析操作影响邮件服务器io处理
         process.nextTick(function(){
             parseMail(msg.mail,msg.postURL);
         });
@@ -23,7 +23,10 @@
         });
 
         mailparser.on("end", function(mail){ 
-            postMail2HTTP(mail,postURL);
+            //避免长时间邮件上传操作影响邮件服务器io处理
+            process.nextTick(function(){
+                postMail2HTTP(mail,postURL);
+            });
         });
 
         mailparser.write(data);
