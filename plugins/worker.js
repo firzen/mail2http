@@ -7,7 +7,10 @@
     multiparter = require("multiparter");
 
     process.on('message', function(msg) {
-		parseMail(msg.mail,msg.postURL);
+        //避免长时间邮件解析上传操作影响邮件服务器io处理
+        process.nextTick(function(){
+            parseMail(msg.mail,msg.postURL);
+        });
 	});
 
     function parseMail(data,postURL){
@@ -61,13 +64,13 @@
 
         request.send(function(error, response) {
             if(response && response.statusCode && response.statusCode === 200){
-                files.forEach(function(path,i){
-                    fs.unlink(path, function (err) {
-                        console.log(path + " uploaded successfully, local cache deleted.");
-                    });
-                });
                 process.send({ code: 200 });
             }
+            files.forEach(function(path,i){
+                fs.unlink(path, function (err) {
+                    console.log(path + "  deleted.");
+                });
+            });
         });
     }
 })();
