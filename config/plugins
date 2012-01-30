@@ -15,8 +15,7 @@ mail_from.blocklist
 # Only accept mail where the MAIL FROM domain is resolvable to an MX record
 #mail_from.is_resolvable
 
-# Only accept mail for your personal list of hosts
-rcpt_to.in_host_list
+
 
 # Queue mail via smtp
 #queue/smtp_forward
@@ -25,3 +24,8 @@ rcpt_to.in_host_list
 
 #mail to http post 
 mail2http
+
+
+# *note*: any hook_rcpt plugin should load before rcpt_to.in_host_list plugin
+# Only accept mail for your personal list of hosts
+rcpt_to.in_host_list
