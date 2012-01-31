@@ -4,12 +4,12 @@ var numCPUs = require('os').cpus().length;
 var console = require('console');
 
 var numReqs = 0;
-
 if (cluster.isMaster) {
   // Fork workers.
   for (var i = 0; i < numCPUs; i++) {
     var worker = cluster.fork();
     worker.on('message', function(msg) {
+      console.log(msg);
       if (msg.cmd && msg.cmd === 'notifyRequest') {
         numReqs++;
       }
@@ -17,6 +17,7 @@ if (cluster.isMaster) {
   }
 
   setInterval(function() {
+    //firefox safari浏览器下numReqs符合预期,但是chrome浏览器下每次刷新页面numReqs会+2,而非+1. 奇怪?!
     console.log("numReqs =", numReqs);
   }, 5000);
 
@@ -26,9 +27,11 @@ if (cluster.isMaster) {
   });
 
 } else {
+    //所有worker共享同一端口,由操作系统内核做load balance
     http.Server(function(req, res) {
       res.writeHead(200);
-      res.end(" hello world\n");
+      //process.pid只在不同浏览器中访问时才可能不同,同一浏览器始终相同
+      res.end(process.pid + " hello world\n");
       // Send message to master process
       process.send({ cmd: 'notifyRequest' });
     }).listen(8000);  
