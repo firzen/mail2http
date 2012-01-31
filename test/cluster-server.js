@@ -18,6 +18,7 @@ if (cluster.isMaster) {
 
   setInterval(function() {
     //firefox safari浏览器下numReqs符合预期,但是chrome浏览器下每次刷新页面numReqs会+2,而非+1. 奇怪?!
+    //chrome will load favicon.ico
     console.log("numReqs =", numReqs);
   }, 5000);
 
@@ -29,10 +30,15 @@ if (cluster.isMaster) {
 } else {
     //所有worker共享同一端口,由操作系统内核做load balance
     http.Server(function(req, res) {
-      res.writeHead(200);
+      console.log(req.url);
+      //chrome will load favicon.ico
+      res.writeHead(200, {'content-type': 'text/html'});
       //process.pid只在不同浏览器中访问时才可能不同,同一浏览器始终相同
       res.end(process.pid + " hello world\n");
       // Send message to master process
-      process.send({ cmd: 'notifyRequest' });
+      if(req.url !== '/favicon.ico'){
+        process.send({ cmd: 'notifyRequest' });
+      }
+      
     }).listen(8000);  
 }
