@@ -121,25 +121,25 @@
         if(picPath){
             tapi.upload({
                     user : authedUser,
-                    status : leftB(status,140)
+                    status : leftB(status || "分享图片" , 140)
                 }, picPath, function(err, data) {
                 cb();
                 if(err) {
                     console.error(err);
                 }else{
-                    console.log("published a weibo !");
+                    console.log("upload a weibo image !");
                 }
             });
         }else{
             tapi.update({ 
                 user:authedUser, 
-                status : leftB(status || "分享图片",140)
+                status : leftB(status,140)
             },function(err,data){
                 cb();
                 if(err){
                     console.error(err);
                 }else{
-                    console.log("upload a weibo image !");
+                    console.log("published a weibo !");
                 }
             });
         }
