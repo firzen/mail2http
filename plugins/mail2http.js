@@ -21,7 +21,7 @@
         if (lines.length === 0) {
             return next(DENY);
         }
-        next(OK);
+        next();
         worker.send({
             mail: lines.join(''),
             postURL : postURL

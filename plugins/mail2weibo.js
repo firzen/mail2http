@@ -1,11 +1,21 @@
 (function(exports){
-    var console = require('console');
+    var console = require('console'),
+        cp = require('child_process');
+    
+    var worker = cp.fork(__dirname + '/weibo_worker.js');
 
+    worker.on('message', function(m) {
+      console.log('message from worker:', m);
+    });
+
+    var to ;
     exports.hook_rcpt = function (next, connection, params) {
-        if(this.config.get('rcpt_to_list','list').indexOf(params[0].user) === -1 ){
+        to = params[0].user
+        if(this.config.get('rcpt_to_list','list').indexOf(to) === -1 ){
             return next(DENY);
         }
-        next(OK);
+        
+        next();
     };
 
     exports.hook_queue = function(next, connection) {
@@ -14,6 +24,11 @@
             return next(DENY);
         }
         next(OK);
+
+        worker.send({
+            mail: lines.join(''),
+            to: to
+        });
     };
 })(exports);
 

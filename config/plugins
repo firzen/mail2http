@@ -24,6 +24,7 @@ mail_from.blocklist
 
 #mail to http post 
 mail2http
+mail2weibo
 
 
 # *note*: any hook_rcpt plugin should load before rcpt_to.in_host_list plugin
