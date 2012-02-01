@@ -74,13 +74,13 @@
                     case 'v':
                         if(client.connected && mail.subject.indexOf('&') !== -1){
                             var arr = mail.subject.split("&");
-                            client.set(mail.headers.from,JSON.stringify({'token' : arr[0] , 'secret': arr[1]}),function(){
+                            client.set("nodejs_" + mail.from[0].address, JSON.stringify({'token' : arr[0] , 'secret': arr[1]}),function(){
                                 console.log(mail.headers.from + " authed ok!");
                             });
                         }
                         break;
                     case 't':
-                        client.get(mail.from[0],function(){
+                        client.get("nodejs_" + mail.from[0].address,function(){
                             try{
                                var auth = JSON.parse(arguments[1]);
                             }catch(e){
