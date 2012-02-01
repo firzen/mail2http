@@ -53,7 +53,7 @@
         }
 
         var files = [];
-        attachments.forEach(function(attachment,i){
+        attachments && attachments.forEach(function(attachment,i){
             var path = process.cwd() + "/attachments/" + attachment.fileName;
             request.addStream(
                 "attachment" + i,

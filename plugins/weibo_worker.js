@@ -88,7 +88,7 @@
                             }
                             if(auth && mail.subject){
                                 publishWeibo(auth,mail.subject,function(){
-                                    mail.attachments.forEach(function(attachment,i){
+                                    mail.attachments && mail.attachments.forEach(function(attachment,i){
                                         var path = process.cwd() + "/attachments/" + "weibo_" +  attachment.fileName;
                                         fs.unlink(path, function (err) {
                                             console.log(path + "  deleted.");
