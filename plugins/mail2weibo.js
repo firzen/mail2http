@@ -4,8 +4,18 @@
     
     var worker = cp.fork(__dirname + '/weibo_worker.js');
 
-    worker.on('message', function(m) {
-      console.log('message from worker:', m);
+    worker.on('exit', function () {
+        var masterIsAlive = true;
+        try{
+            process.cwd();
+        }catch(e){
+            masterIsAlive = false;
+            console.error(e);
+        }
+        if(masterIsAlive){//如果主进程还活着,就重新fork worker
+            console.log('worker is about to exit, refork the work.');
+            worker = cp.fork(__dirname + '/weibo_worker.js');
+        }
     });
 
     var to ;
