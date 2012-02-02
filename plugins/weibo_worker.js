@@ -13,6 +13,9 @@
     redis = require("redis"),
     client = redis.createClient();
 
+    var querystring = require('querystring');
+    var http = require('http');
+
     client.on("error", function (err) {
         console.error("redis connection Error " + err);
     });
@@ -99,7 +102,8 @@
                         });
                         break;
                     case 'l':
-                        //todo
+                        //让老服务代理
+                        getFriendTimeline(mail.from[0].address);
                         break;
                 }
             });
@@ -154,4 +158,26 @@
         return str;
     };
 
+    function getFriendTimeline(sender) {
+        var post_data = querystring.stringify({
+            'sender' : sender
+        });
+
+        // Set up the request
+        var post_req = http.request({
+            host: 'mail2weibo.session.im',
+            port: '80',
+            path: '/weibo/l/',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': post_data.length
+            }
+        }, function(res) {
+            
+        });
+
+        post_req.write(post_data);
+        post_req.end();
+    }
 })();
