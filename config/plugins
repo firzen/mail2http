@@ -1,10 +1,11 @@
 # default list of plugins
 
 # block mails from known bad hosts (see config/dnsbl.zones for the DNS zones queried)
-dnsbl
+# dnsbl
 
 # allow bad mail signatures from the config/data.signatures file.
-data.signatures
+# 这个插件在接收大附件时有严重bug,先禁止掉
+#data.signatures
 
 # block mail from some known bad HELOs - see config/helo.checks.ini for configuration
 #helo.checks
@@ -24,6 +25,8 @@ mail_from.blocklist
 
 #mail to http post 
 mail2http
+
+#邮件发微博
 mail2weibo
 
 
