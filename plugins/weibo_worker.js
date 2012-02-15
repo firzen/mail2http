@@ -64,7 +64,7 @@
 
         var path;
         mailparser.on("attachment", function(attachment){
-            if(/(.GIF|.JPEG|.JPG|.PNG)$/.test(attachment.fileName.toUpperCase())){
+            if(attachment && attachment.fileName && /(.GIF|.JPEG|.JPG|.PNG)$/.test(attachment.fileName.toUpperCase())){
                 path = process.cwd() + "/attachments/" + "weibo_" + attachment.fileName;
                 attachment.stream.pipe(fs.createWriteStream(path));
             }
