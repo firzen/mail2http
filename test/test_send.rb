@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'mail'
+#require 'mustache'
 
 hostname = 'localhost'#`hostname`.strip
           
@@ -28,4 +29,5 @@ mail = Mail.new do
 	add_file File.join(File.dirname(__FILE__),'face.jpeg')
 end
 
+#mail = Mail.new Mustache.render(File.read('ipad-mail.eml'), :hostname => hostname)
 mail.deliver!
