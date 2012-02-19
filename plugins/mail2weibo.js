@@ -5,10 +5,10 @@
     var worker = cp.fork(__dirname + '/weibo_worker.js');
 
     worker.on('exit', function () {
-        console.log('worker is about to exit, refork the work.');
+        console.log('mail2weibo worker is about to exit, refork the worker.');
         worker = cp.fork(__dirname + '/weibo_worker.js');
     });
-
+    
     var to ;
     exports.hook_rcpt = function (next, connection, params) {
         to = params[0].user
@@ -25,7 +25,6 @@
             return next(DENY);
         }
         next(OK);
-
         worker.send({
             mail: lines.join(''),
             to: to

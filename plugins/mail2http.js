@@ -7,7 +7,10 @@
     worker.on('message', function(m) {
       console.log('message from worker:', m);
     });
-
+    worker.on('exit', function () {
+        console.log('worker is about to exit, refork the worker.');
+        worker = cp.fork(__dirname + '/worker.js');
+    });
     
 
     var postURL;

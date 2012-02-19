@@ -19,7 +19,10 @@
         });
 
         mailparser.on("attachment", function(attachment){
-            attachment.stream.pipe(fs.createWriteStream(process.cwd() + "/attachments/" + attachment.fileName ));
+            console.log(attachment)
+            if(attachment && attachment.fileName){
+                attachment.stream.pipe(fs.createWriteStream(process.cwd() + "/attachments/" + attachment.fileName ));           
+            }
         });
 
         mailparser.on("end", function(mail){ 
