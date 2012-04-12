@@ -7,11 +7,22 @@
     worker.on('message', function(m) {
       console.log('message from worker:', m);
     });
+   
+    //自动重启死亡worker子进程
     worker.on('exit', function () {
-        console.log('worker is about to exit, refork the worker.');
-        worker = cp.fork(__dirname + '/worker.js');
+        console.log('mail2weibo worker is about to exit, refork the worker.');
+        process.nextTick(function () {
+           worker = cp.fork(__dirname + '/worker.js');
+        });
     });
     
+    //Master退出时杀死所有worker进程
+    process.on('SIGTERM', function() {
+       console.log('Master killed');
+       console.log('worker '+ worker.pid + ' killed');
+       worker.kill();
+       process.exit(0);
+    });
 
     var postURL;
     exports.register = function () {
