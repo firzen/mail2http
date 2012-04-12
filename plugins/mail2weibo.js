@@ -3,11 +3,22 @@
         cp = require('child_process');
     
     var worker = cp.fork(__dirname + '/weibo_worker.js');
-
+    
+    //自动重启死亡worker子进程
     worker.on('exit', function () {
         console.log('mail2weibo worker is about to exit, refork the worker.');
-        worker = cp.fork(__dirname + '/weibo_worker.js');
+        process.nextTick(function () {
+           worker = cp.fork(__dirname + '/weibo_worker.js');
+        });
     });
+    
+    //Master退出时杀死所有worker进程
+   process.on('SIGTERM', function() {
+     console.log('Master killed');
+     console.log('worker '+ worker.pid + ' killed');
+     worker.kill();
+     process.exit(0);
+  });
     
     var to ;
     exports.hook_rcpt = function (next, connection, params) {
