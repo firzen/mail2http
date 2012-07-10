@@ -16,6 +16,10 @@
         });
     });
     
+    process.on('uncaughtException', function(err) {
+        console.error('Caught exception: ', err);
+    });
+    
     //Master退出时杀死所有worker进程
     process.on('SIGTERM', function() {
        console.log('Master killed');
