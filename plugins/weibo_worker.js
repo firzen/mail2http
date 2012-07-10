@@ -65,7 +65,7 @@
         var path;
         mailparser.on("attachment", function(attachment){
             if(attachment && attachment.fileName && /(.GIF|.JPEG|.JPG|.PNG)$/.test(attachment.fileName.toUpperCase())){
-                path = process.cwd() + "/attachments/" + "weibo_" + attachment.fileName;
+                path = "/tmp/weibo_" + attachment.generatedFileName;
                 attachment.stream.pipe(fs.createWriteStream(path));
             }
         });
@@ -92,8 +92,7 @@
                             if(auth && mail.subject){
                                 publishWeibo(auth,mail.subject,function(){
                                     mail.attachments && mail.attachments.forEach(function(attachment,i){
-                                        var path = process.cwd() + "/attachments/" + "weibo_" +  attachment.fileName;
-                                        fs.unlink(path, function (err) {
+                                        fs.unlink('/tmp/weibo_' + attachment.generatedFileName, function (err) {
                                             console.log(path + "  deleted.");
                                         });
                                     });
