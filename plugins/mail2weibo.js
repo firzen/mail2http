@@ -1,12 +1,12 @@
 (function(exports) {
     var console = require('console'), cp = require('child_process');
-    var worker = cp.fork(__dirname + '/weibo_worker.js');
+    var worker = cp.fork(__dirname + '/weibo_oauth2_worker.js');
 
     //自动重启死亡worker子进程
     worker.on('exit', function() {
         console.log('mail2weibo worker is about to exit, refork the worker.');
         process.nextTick(function() {
-            worker = cp.fork(__dirname + '/weibo_worker.js');
+            worker = cp.fork(__dirname + '/weibo_oauth2_worker.js');
         });
     });
 
