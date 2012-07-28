@@ -108,7 +108,7 @@ app.get('/', function(req, res) {
 app.get('/callback', function(req, res) {
   var code = req.param('code', null);
   if(code) {
-    exports.access_token(code, function(data) {
+      weibo_api.access_token(code, function(data) {
       console.log(data);
       res.end('<ul>\
             <li>绑定邮箱,请发邮件到 v@session.im (邮件 <b>主题</b> 必须为 access_token <b>邮件内容</b>可以为空)</li>\
@@ -122,4 +122,3 @@ app.get('/callback', function(req, res) {
   }
 });
 app.listen(8888);
-console.log(weibo_api)
