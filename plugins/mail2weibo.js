@@ -22,6 +22,6 @@
             return next(DENY);
         }
         next(OK);
-        worker.parseMail(lines.join(''),to);
+        worker.parseMail(Buffer.concat(lines),to);
     };
 })(exports);
