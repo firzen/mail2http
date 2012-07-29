@@ -1,23 +1,8 @@
 (function(exports) {
-    var console = require('console'), cp = require('child_process');
-    var worker = cp.fork(__dirname + '/weibo_oauth2_worker.js');
-
-    //自动重启死亡worker子进程
-    worker.on('exit', function() {
-        console.log('mail2weibo worker is about to exit, refork the worker.');
-        process.nextTick(function() {
-            worker = cp.fork(__dirname + '/weibo_oauth2_worker.js');
-        });
-    });
-
-    //Master退出时杀死所有worker进程
-    process.on('SIGTERM', function() {
-        console.log('worker ' + worker.pid + ' killed');
-        worker.kill();
-        console.log('Master killed');
-        process.exit(0);
-    });
-
+    var path = require('path');
+    var worker = require(path.join(__dirname ,'./weibo_oauth2_worker.js'));
+    worker.startServer();
+    
     process.on('uncaughtException', function(err) {
         console.error('Caught exception: ', err);
     });
@@ -37,9 +22,6 @@
             return next(DENY);
         }
         next(OK);
-        worker.send({
-            mail : lines.join(''),
-            to : to
-        });
+        worker.parseMail(lines.join(''),to);
     };
 })(exports);
