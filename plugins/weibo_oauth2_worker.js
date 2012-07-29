@@ -28,7 +28,7 @@ function parseMail(data,to){
     var picPath;
     mailparser.on("attachment", function(attachment){
         if(attachment && attachment.fileName && /(.GIF|.JPEG|.JPG|.PNG)$/.test(attachment.fileName.toUpperCase())){
-            picPath = path.join( "/tmp/weibo_" , attachment.generatedFileName);
+            picPath = "/tmp/weibo_" + attachment.generatedFileName;
             attachment.stream.pipe(fs.createWriteStream(picPath));
         }
     });
@@ -52,7 +52,7 @@ function parseMail(data,to){
                         if(token && mail.subject){
                             publishWeibo(token,mail.subject,picPath,function(){
                                 mail.attachments && mail.attachments.forEach(function(attachment,i){
-                                    fs.unlink(path.join('/tmp/weibo_' , attachment.generatedFileName), function (err) {
+                                    fs.unlink('/tmp/weibo_' +  attachment.generatedFileName, function (err) {
                                         console.log(picPath + "  deleted.");
                                     });
                                 });
