@@ -1,22 +1,29 @@
-Haraka
 
-Congratulations on creating a new installation of Haraka.
+mail hook to http post, based on Haraka(smtp server for nodejs)
 
-This directory contains two key directories for how Haraka will function:
+When smtp server receive email, post the content of email to specified http api instantly in multipart/form-data format .
+install dependency:
+npm install mailparser multiparter formidable weibo node-uuid connect redis
+iconv 需要在不同平台上重新编译--准备去掉此依赖(mailparser)
+run the smtp server(bind 25 port default):
+cd ~/mail2http
+haraka -c .
+run the http api server:
+cd ~/mail2http/test/
+node upload-server.js
+send test email:
+ruby ~/mail2http/test/test_send.rb
 
- - config
-           This directory contains configuration files for Haraka. The
-           directory contains the default configuration. You probably want
-           to modify some files in here, particularly `smtp.ini`.
- - plugins
-           This directory contains custom plugins which you write to run in
-           Haraka. The plugins which ship with Haraka are still available
-           to use.
- - docs/plugins
-           This directory contains documentation for your plugins.
-
-Documentation for Haraka is available via `haraka -h <name> where the name
-is either the name of a plugin (without the .js extension) or the name of
-a core Haraka module, such as `Connection` or `Transaction`.
-
-To get documentation on writing a plugin type `haraka -h Plugins`.
+the http api will receive all email content in multipart/form-data format :
+from : Array
+to : Array
+subject : String
+html : String , html body if any.
+text : String , text body if any.
+attachment0 : attachment file
+attachment1
+attachment2
+attachmentN...
+Project tested on mac and ubuntu 11 server.
+see config/plugins
+plugins/mail2weibo.js is a plugin, which can publish email to sina weibo.
